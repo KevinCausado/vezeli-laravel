@@ -81,7 +81,7 @@ class UserResource extends Resource
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
-        Tables\Actions\ViewAction::make()->disabled(fn($record) => $record && $record->id === 1),
+        // Tables\Actions\ViewAction::make()->disabled(fn($record) => $record && $record->id === 1),
         Tables\Actions\DeleteAction::make()->disabled(fn($record) => $record && $record->id === 1),
       ])
       ->bulkActions([
