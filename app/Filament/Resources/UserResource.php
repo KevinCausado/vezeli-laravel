@@ -51,6 +51,7 @@ class UserResource extends Resource
           ->required()
           ->native(false)
           ->visibleOn('edit')
+          ->disabled(fn($record) => $record && $record->id === 1),
 
       ]);
   }
@@ -62,10 +63,11 @@ class UserResource extends Resource
         TextColumn::make('name'),
         TextColumn::make('email'),
         IconColumn::make('status')
+          ->getStateUsing(fn($record) => $record->status === 'A')
           ->boolean()
           ->trueIcon('heroicon-o-check-circle')
-          ->falseIcon('heroicon-o-x-circle')
-          ->getStateUsing(fn($record) => $record->status === 'A'),
+          ->falseIcon('heroicon-o-x-circle'),
+        // ->label(fn($record) => $record->status === 'A' ? 'ACTIVE' : 'INACTIVE'), 
         TextColumn::make('updated_at')
       ])
       ->filters([
@@ -79,10 +81,13 @@ class UserResource extends Resource
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        Tables\Actions\ViewAction::make()->disabled(fn($record) => $record && $record->id === 1),
+        Tables\Actions\DeleteAction::make()->disabled(fn($record) => $record && $record->id === 1),
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([
-          Tables\Actions\DeleteBulkAction::make(),
+          Tables\Actions\DeleteBulkAction::make()
+            ->disabled(fn($records) => collect($records)->contains(fn($record) => $record->id === 1)),
         ]),
       ]);
   }
