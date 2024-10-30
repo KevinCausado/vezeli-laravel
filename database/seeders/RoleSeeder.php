@@ -15,13 +15,24 @@ class RoleSeeder extends Seeder
   public function run(): void
   {
     // Role::truncate();
-     
-    DB::table('roles')->insert([
-      'name' => 'Administrador',
-      'status' => 'A',
-      'created_at' => now(),
-      'updated_at' => now(),
-      'deleted_at' => null
-    ]);
+
+    DB::table('roles')->insert(
+      [
+        [
+          'name' => 'Administrador',
+          'status' => 'A',
+          'created_at' => now(),
+          'updated_at' => now(),
+          'deleted_at' => null
+        ],
+        [
+          'name' => 'Cliente',
+          'status' => 'A',
+          'created_at' => now(),
+          'updated_at' => now(),
+          'deleted_at' => null
+        ],
+      ]
+    );
   }
 }
