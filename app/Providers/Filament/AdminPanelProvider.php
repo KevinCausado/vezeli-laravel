@@ -51,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->plugin(\TomatoPHP\FilamentTranslations\FilamentTranslationsPlugin::make())
             ->plugin(\TomatoPHP\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin::make())
             ->plugin(
               \TomatoPHP\FilamentEcommerce\FilamentEcommercePlugin::make()
