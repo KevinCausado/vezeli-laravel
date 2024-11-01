@@ -11,7 +11,8 @@
         "laravel/tinker": "^2.9",
         "tomatophp/filament-ecommerce": "^1.0",
         "tomatophp/filament-language-switcher": "^1.0",
-        "tomatophp/filament-translations": "^2.0"
+        "tomatophp/filament-translations": "^2.0",
+        "tomatophp/filament-translations-google": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

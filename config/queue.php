@@ -13,6 +13,8 @@ return [
     |
     */
 
+    'use_queue_on_scan' => true,
+
     'default' => env('QUEUE_CONNECTION', 'database'),
 
     /*
