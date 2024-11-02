@@ -14,7 +14,7 @@
 
         {!! view_render_event('bagisto.shop.layout.head.before') !!}
 
-        <title>{{ $title ?? '' }}</title>
+        <title>Vezeli</title>
 
         <meta charset="UTF-8">
 

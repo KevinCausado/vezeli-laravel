@@ -9,7 +9,7 @@
     <div class="flex items-center gap-x-10 max-[1180px]:gap-x-5">
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.before') !!}
 
-        <a
+        {{-- <a
             href="{{ route('shop.home.index') }}"
             aria-label="@lang('shop::app.components.layouts.header.bagisto')"
         >
@@ -19,8 +19,14 @@
                 height="29"
                 alt="{{ config('app.name') }}"
             >
-        </a>
-
+        </a> --}}
+        <a
+        href="{{ route('shop.home.index') }}"
+        aria-label="@lang('shop::app.components.layouts.header.bagisto')">
+        <span class="h-10 text-xl font-bold">Vezeli</span> 
+      </a> 
+ 
+        
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.after') !!}
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.category.before') !!}

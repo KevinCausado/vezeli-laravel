@@ -12,7 +12,7 @@
         </i>
 
         <!-- Logo -->
-        <a href="{{ route('admin.dashboard.index') }}">
+        {{-- <a href="{{ route('admin.dashboard.index') }}">
             @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
                 <img
                     class="h-10"
@@ -26,10 +26,15 @@
                     alt="{{ config('app.name') }}"
                 />
             @endif
-        </a>
+        </a> --}}
+
+
+         <a href="{{ route('admin.dashboard.index') }}">
+        <span class="h-10 text-xl font-bold">Vezeli</span>
+      </a> 
 
         <!-- Mega Search Bar Vue Component -->
-        <v-mega-search>
+        {{-- <v-mega-search>
             <div class="relative flex w-[525px] max-w-[525px] items-center max-lg:w-[400px] ltr:ml-2.5 rtl:mr-2.5">
                 <i class="icon-search absolute top-1.5 flex items-center text-2xl ltr:left-3 rtl:right-3"></i>
 
@@ -39,7 +44,7 @@
                     placeholder="@lang('admin::app.components.layouts.header.mega-search.title')" 
                 >
             </div>
-        </v-mega-search>
+        </v-mega-search> --}}
     </div>
 
     <div class="flex items-center gap-2.5">
