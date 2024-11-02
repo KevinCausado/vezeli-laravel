@@ -19,12 +19,7 @@
                     class="flex min-h-[30px]"
                     aria-label="@lang('shop::checkout.onepage.index.bagisto')"
                 >
-                    <img
-                        src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
-                        alt="{{ config('app.name') }}"
-                        width="131"
-                        height="29"
-                    >
+                <span class="h-10 text-xl font-bold">Vezeli</span>
                 </a>
             </div>
 

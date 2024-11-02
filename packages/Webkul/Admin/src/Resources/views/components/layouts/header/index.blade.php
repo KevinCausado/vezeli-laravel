@@ -153,7 +153,7 @@
     <!-- Drawer Header -->
     <x-slot:header>
         <div class="flex items-center justify-between">
-            @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+            {{-- @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
                 <img
                     class="h-10"
                     src="{{ Storage::url($logo) }}"
@@ -165,7 +165,7 @@
                     id="logo-image"
                     alt="{{ config('app.name') }}"
                 />
-            @endif
+            @endif --}}
         </div>
     </x-slot>
 

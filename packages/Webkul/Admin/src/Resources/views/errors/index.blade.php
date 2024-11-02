@@ -8,10 +8,7 @@
 	<div class="flex h-[100vh] items-center justify-center bg-white dark:bg-gray-900">
         <div class="flex max-w-[745px] items-center gap-5">
             <div class="w-full">
-                <img
-                    src="{{ bagisto_asset('images/logo.svg') }}"
-                    class="mb-6"
-                >
+              <span class="h-10 text-xl font-bold">Vezeli</span>
 
 				<div class="text-[38px] font-bold text-gray-800 dark:text-white">
                     {{ $errorCode }}

@@ -7,7 +7,7 @@
     <div class="flex h-[100vh] items-center justify-center">
         <div class="flex flex-col items-center gap-5">
             <!-- Logo -->
-            @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+            {{-- @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
                 <img
                     class="h-10 w-[110px]"
                     src="{{ Storage::url($logo) }}"
@@ -19,7 +19,8 @@
                     src="{{ bagisto_asset('images/logo.svg') }}"
                     alt="{{ config('app.name') }}"
                 />
-            @endif
+            @endif --}}
+            <span class="h-10 text-xl font-bold">Vezeli</span> 
 
             <div class="box-shadow flex min-w-[300px] flex-col rounded-md bg-white dark:bg-gray-900">
                 <!-- Login Form -->
