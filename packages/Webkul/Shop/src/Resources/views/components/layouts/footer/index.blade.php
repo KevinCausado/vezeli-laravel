@@ -77,7 +77,7 @@
             </x-slot>
         </x-shop::accordion>
 
-        {!! view_render_event('bagisto.shop.layout.footer.newsletter_subscription.before') !!}
+        {{-- {!! view_render_event('bagisto.shop.layout.footer.newsletter_subscription.before') !!}
 
         <!-- News Letter subscription -->
         @if (core()->getConfigData('customer.settings.newsletter.subscription'))
@@ -122,7 +122,7 @@
                     </x-shop::form>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
         {!! view_render_event('bagisto.shop.layout.footer.newsletter_subscription.after') !!}
     </div>
@@ -131,7 +131,10 @@
         {!! view_render_event('bagisto.shop.layout.footer.footer_text.before') !!}
 
         <p class="text-sm text-zinc-600 max-md:text-center">
-            @lang('shop::app.components.layouts.footer.footer-text', ['current_year'=> date('Y') ])
+            {{-- @lang('shop::app.components.layouts.footer.footer-text', ['current_year'=> date('Y') ]) --}}
+            <p class="text-sm text-zinc-600 max-md:text-center">
+              © {{ date('Y') }} Vezeli. Todos los derechos reservados.
+          </p>
         </p>
 
         {!! view_render_event('bagisto.shop.layout.footer.footer_text.after') !!}
