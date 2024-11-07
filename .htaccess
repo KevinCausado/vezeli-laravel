@@ -1,0 +1,9 @@
+# Habilitar la reescritura de URLs
+RewriteEngine On
+
+# Forzar el uso de HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Establecer ServerName (opcional, si tienes problemas con Apache en Railway)
+ServerName vezeli-laravel-production.up.railway.app
