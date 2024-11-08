@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
         ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
             Artisan::call('db:seed');
         });
+
+        if (env('APP_ENV') !== 'local') {
+          \URL::forceScheme('https');
+      }
     }
 
     /**

@@ -36,7 +36,7 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # Configuramos el archivo de configuración de Apache para apuntar a 'public'
 RUN echo '<VirtualHost *:80>\n\
     ServerAdmin webmaster@localhost\n\
-    ServerName localhost\n\
+    ServerName localhost/\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
