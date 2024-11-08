@@ -20,8 +20,12 @@ RUN apt-get update && apt-get install -y \
 # Instalamos Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Habilitamos mod_rewrite
-RUN a2enmod rewrite
+# Habilitamos mod_rewrite y SSL
+RUN a2enmod rewrite ssl
+
+# Copiamos los certificados SSL autofirmados al contenedor
+COPY ssl/server.crt /etc/ssl/certs/server.crt
+COPY ssl/server.key /etc/ssl/private/server.key
 
 # Copiamos el proyecto Laravel al contenedor
 COPY . /var/www/html
@@ -33,11 +37,24 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Configuramos el archivo de configuración de Apache para apuntar a 'public'
+# Configuramos el archivo de configuración de Apache para HTTP y HTTPS
 RUN echo '<VirtualHost *:80>\n\
     ServerAdmin webmaster@localhost\n\
-    ServerName localhost/\n\
+    ServerName localhost\n\
     DocumentRoot /var/www/html/public\n\
+    <Directory /var/www/html/public>\n\
+        AllowOverride All\n\
+        Options Indexes FollowSymLinks\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>\n\
+<VirtualHost *:443>\n\
+    ServerAdmin webmaster@localhost\n\
+    ServerName localhost\n\
+    DocumentRoot /var/www/html/public\n\
+    SSLEngine on\n\
+    SSLCertificateFile /etc/ssl/certs/server.crt\n\
+    SSLCertificateKeyFile /etc/ssl/private/server.key\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
         Options Indexes FollowSymLinks\n\
@@ -45,8 +62,11 @@ RUN echo '<VirtualHost *:80>\n\
     </Directory>\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# Exponemos el puerto para Railway
-EXPOSE 80
+# Habilitamos el sitio SSL
+RUN a2ensite 000-default
+
+# Exponemos los puertos 80 y 443
+EXPOSE 80 443
 
 # Comando de inicio del contenedor
 CMD ["apache2-foreground"]
