@@ -1,0 +1,14 @@
+[build]
+# Definir el lenguaje y entorno (Laravel está basado en PHP)
+builder = "heroku/php"
+
+[env]
+# Aquí puedes especificar variables de entorno para tu contenedor
+# como las claves API o configuraciones de la base de datos
+APP_KEY = "base64:your-app-key"
+APP_ENV = "production"
+APP_DEBUG = "false"
+
+[run]
+# Aquí puedes definir cómo se ejecuta tu aplicación
+start = "php artisan serve --host=0.0.0.0 --port=8000"
