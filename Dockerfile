@@ -24,8 +24,8 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 RUN a2enmod rewrite ssl
 
 # Copiamos los certificados SSL autofirmados al contenedor
-COPY ssl/server.crt /etc/ssl/certs/server.crt
-COPY ssl/server.key /etc/ssl/private/server.key
+# COPY ssl/server.crt /etc/ssl/certs/server.crt
+# COPY ssl/server.key /etc/ssl/private/server.key
 
 # Copiamos el proyecto Laravel al contenedor
 COPY . /var/www/html
@@ -39,8 +39,8 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Configuramos el archivo de configuración de Apache para HTTP y HTTPS
 RUN echo '<VirtualHost *:80>\n\
-    ServerAdmin webmaster@localhost\n\
-    ServerName localhost\n\
+    ServerAdmin webmaster@eloquent-bravery-production.up.railway.app\n\
+    ServerName eloquent-bravery-production.up.railway.app\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
@@ -49,8 +49,8 @@ RUN echo '<VirtualHost *:80>\n\
     </Directory>\n\
 </VirtualHost>\n\
 <VirtualHost *:443>\n\
-    ServerAdmin webmaster@localhost\n\
-    ServerName localhost\n\
+    ServerAdmin webmaster@eloquent-bravery-production.up.railway.app\n\
+    ServerName eloquent-bravery-production.up.railway.app\n\
     DocumentRoot /var/www/html/public\n\
     SSLEngine on\n\
     SSLCertificateFile /etc/ssl/certs/server.crt\n\
