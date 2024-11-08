@@ -23,9 +23,7 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 # Habilitamos mod_rewrite y SSL
 RUN a2enmod rewrite ssl
 
-# Copiamos los certificados SSL autofirmados al contenedor
-# COPY ssl/server.crt /etc/ssl/certs/server.crt
-# COPY ssl/server.key /etc/ssl/private/server.key
+
 
 # Copiamos el proyecto Laravel al contenedor
 COPY . /var/www/html
