@@ -53,7 +53,7 @@ class ProductController extends Controller
                 $productDownloadableLink = $this->productDownloadableLinkRepository->findOrFail(request('id'));
 
                 if ($productDownloadableLink->sample_type == 'file') {
-                    $privateDisk = Storage::disk('private');
+                    $privateDisk = Storage::disk('s3');
 
                     return $privateDisk->exists($productDownloadableLink->sample_file)
                         ? $privateDisk->download($productDownloadableLink->sample_file)

@@ -23,40 +23,43 @@ class ProductImage
      * @return array
      */
     public function getGalleryImages($product)
-    {
-        if (! $product) {
-            return [];
-        }
-
-        $images = [];
-
-        foreach ($product->images as $image) {
-            if (! Storage::has($image->path)) {
-                continue;
-            }
-
-            $images[] = $this->getCachedImageUrls($image->path);
-        }
-
-        if (
-            ! $product->parent_id
-            && ! count($images)
-            && ! count($product->videos ?? [])
-        ) {
-            $images[] = $this->getFallbackImageUrls();
-        }
-
-        /*
-         * Product parent checked already above. If the case reached here that means the
-         * parent is available. So recursing the method for getting the parent image if
-         * images of the child are not found.
-         */
-        if (empty($images)) {
-            $images = $this->getGalleryImages($product->parent);
-        }
-
-        return $images;
+{
+    if (! $product) {
+        return [];
     }
+
+    $images = [];
+
+    // Iterar a través de las imágenes asociadas al producto
+    foreach ($product->images as $image) {
+        // Verificar si la imagen existe en el bucket S3
+        if (! Storage::disk('s3')->exists($image->path)) {
+            continue;
+        }
+
+        // Obtener la URL pública de la imagen almacenada en S3
+        $images[] = Storage::disk('s3')->url($image->path);
+    }
+
+    // Si no se encuentran imágenes, agregar imagen de reemplazo (fallback)
+    if (
+        ! $product->parent_id
+        && ! count($images)
+        && ! count($product->videos ?? [])
+    ) {
+        $images[] = $this->getFallbackImageUrls();
+    }
+
+    /*
+     * Si el producto no tiene imágenes, intentar buscar las imágenes del producto principal (si existe)
+     */
+    if (empty($images)) {
+        $images = $this->getGalleryImages($product->parent);
+    }
+
+    return $images;
+}
+
 
     /**
      * Get product variant image if available otherwise product base image.
@@ -65,19 +68,24 @@ class ProductImage
      * @return array
      */
     public function getProductImage($item)
-    {
-        if ($item instanceof Wishlist) {
-            if (isset($item->additional['selected_configurable_option'])) {
-                $product = $this->productRepository->find($item->additional['selected_configurable_option']);
-            } else {
-                $product = $item->product;
-            }
+{
+    // Verifica si el artículo es un Wishlist
+    if ($item instanceof Wishlist) {
+        // Si tiene una opción configurable seleccionada, busca el producto configurado
+        if (isset($item->additional['selected_configurable_option'])) {
+            $product = $this->productRepository->find($item->additional['selected_configurable_option']);
         } else {
+            // Si no, obtiene el producto directamente
             $product = $item->product;
         }
-
-        return $this->getProductBaseImage($product);
+    } else {
+        $product = $item->product;
     }
+
+    // Obtiene la imagen base del producto
+    return $this->getProductBaseImage($product);
+}
+
 
     /**
      * This method will first check whether the gallery images are already
@@ -89,14 +97,15 @@ class ProductImage
      */
     public function getProductBaseImage($product, ?array $galleryImages = null)
     {
-        if (! $product) {
-            return;
+        // Si hay imágenes de galería, devuelve la primera
+        if ($galleryImages) {
+            return $galleryImages[0];
         }
-
-        return $galleryImages
-            ? $galleryImages[0]
-            : $this->otherwiseLoadFromProduct($product);
+    
+        // Si no, obtiene la imagen base del producto
+        return $this->otherwiseLoadFromProduct($product);
     }
+    
 
     /**
      * Load product's base image.
@@ -105,13 +114,18 @@ class ProductImage
      * @return array
      */
     protected function otherwiseLoadFromProduct($product)
-    {
-        $images = $product?->images;
+{
+    // Obtiene las imágenes del producto
+    $images = $product?->images;
 
-        return $images && $images->count()
-            ? $this->getCachedImageUrls($images[0]->path)
-            : $this->getFallbackImageUrls();
+    // Si el producto tiene imágenes, devuelve la URL de la primera imagen
+    if ($images && $images->count()) {
+        return $this->getCachedImageUrls($images[0]->path);
     }
+
+    // Si no hay imágenes, devuelve una URL de fallback
+    return $this->getFallbackImageUrls();
+}
 
     /**
      * Get cached urls configured for intervention package.
@@ -119,54 +133,68 @@ class ProductImage
      * @param  string  $path
      */
     private function getCachedImageUrls($path): array
-    {
-        if (! $this->isDriverLocal()) {
-            return [
-                'small_image_url'    => Storage::url($path),
-                'medium_image_url'   => Storage::url($path),
-                'large_image_url'    => Storage::url($path),
-                'original_image_url' => Storage::url($path),
-            ];
-        }
-
+{
+    // Si el almacenamiento es local, devuelve URLs locales
+    if (! $this->isDriverS3()) {
         return [
-            'small_image_url'    => url('cache/small/'.$path),
-            'medium_image_url'   => url('cache/medium/'.$path),
-            'large_image_url'    => url('cache/large/'.$path),
-            'original_image_url' => url('cache/original/'.$path),
+            'small_image_url'    => Storage::url($path),
+            'medium_image_url'   => Storage::url($path),
+            'large_image_url'    => Storage::url($path),
+            'original_image_url' => Storage::url($path),
         ];
     }
+
+    // Si el almacenamiento es S3, devuelve URLs de S3
+    return [
+        'small_image_url'    => Storage::disk('s3')->url($path),
+        'medium_image_url'   => Storage::disk('s3')->url($path),
+        'large_image_url'    => Storage::disk('s3')->url($path),
+        'original_image_url' => Storage::disk('s3')->url($path),
+    ];
+}
+
 
     /**
      * Get fallback urls.
      */
     private function getFallbackImageUrls(): array
-    {
-        $smallImageUrl = core()->getConfigData('catalog.products.cache_small_image.url')
-                        ? Storage::url(core()->getConfigData('catalog.products.cache_small_image.url'))
-                        : bagisto_asset('images/small-product-placeholder.webp', 'shop');
+{
+    // URLs de fallback desde la configuración
+    $smallImageUrl = core()->getConfigData('catalog.products.cache_small_image.url')
+                    ? Storage::url(core()->getConfigData('catalog.products.cache_small_image.url'))
+                    : bagisto_asset('images/small-product-placeholder.webp', 'shop');
 
-        $mediumImageUrl = core()->getConfigData('catalog.products.cache_medium_image.url')
-                        ? Storage::url(core()->getConfigData('catalog.products.cache_medium_image.url'))
-                        : bagisto_asset('images/medium-product-placeholder.webp', 'shop');
+    $mediumImageUrl = core()->getConfigData('catalog.products.cache_medium_image.url')
+                    ? Storage::url(core()->getConfigData('catalog.products.cache_medium_image.url'))
+                    : bagisto_asset('images/medium-product-placeholder.webp', 'shop');
 
-        $largeImageUrl = core()->getConfigData('catalog.products.cache_large_image.url')
-                        ? Storage::url(core()->getConfigData('catalog.products.cache_large_image.url'))
-                        : bagisto_asset('images/large-product-placeholder.webp', 'shop');
+    $largeImageUrl = core()->getConfigData('catalog.products.cache_large_image.url')
+                    ? Storage::url(core()->getConfigData('catalog.products.cache_large_image.url'))
+                    : bagisto_asset('images/large-product-placeholder.webp', 'shop');
 
-        return [
-            'small_image_url'    => $smallImageUrl,
-            'medium_image_url'   => $mediumImageUrl,
-            'large_image_url'    => $largeImageUrl,
-            'original_image_url' => bagisto_asset('images/large-product-placeholder.webp', 'shop'),
-        ];
-    }
+    // Si estamos en S3, se utilizarían URLs públicas de S3 para imágenes de reemplazo, si las configuraciones no existen
+    return [
+        'small_image_url'    => $smallImageUrl,
+        'medium_image_url'   => $mediumImageUrl,
+        'large_image_url'    => $largeImageUrl,
+        'original_image_url' => bagisto_asset('images/large-product-placeholder.webp', 'shop'),
+    ];
+}
+
 
     /**
      * Is driver local.
      */
-    private function isDriverLocal(): bool
-    {
-        return Storage::getAdapter() instanceof LocalFilesystemAdapter;
-    }
+    
+     private function isDriverS3(): bool
+     {
+         return Storage::getAdapter() instanceof \League\Flysystem\AwsS3v3\AwsS3Adapter;
+     }    
+    
+    
+    
+    //  private function isDriverLocal(): bool
+    // {
+    //     return Storage::getAdapter() instanceof LocalFilesystemAdapter;
+    // }
 }

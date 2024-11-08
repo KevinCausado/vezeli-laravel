@@ -64,20 +64,23 @@ class AccountController extends Controller
         }
 
         if (request()->hasFile('image')) {
-            $data['image'] = current(request()->file('image'))->store('admins/'.$user->id);
-        } else {
-            if (! isset($data['image'])) {
-                if (! empty($data['image'])) {
-                    Storage::delete($user->image);
-                }
-
-                $data['image'] = null;
-            } else {
-                $data['image'] = $user->image;
-            }
-        }
-
-        $user->update($data);
+          // Guardar la imagen en el bucket S3 dentro de la carpeta 'admins/{user->id}'
+          $data['image'] = request()->file('image')->store('images/'.$user->id, 's3');
+      } else {
+          // Si no se sube una nueva imagen
+          if (!empty($user->image)) {
+              // Eliminar la imagen anterior del bucket S3 si existe
+              Storage::disk('s3')->delete($user->image);
+          }
+      
+          // Si no hay nueva imagen, se mantiene la imagen actual o se deja como null
+          $data['image'] = $user->image ?: null;
+      }
+      
+      // Actualizar el usuario con la nueva imagen
+      $user->update($data);
+      
+      
 
         if ($isPasswordChanged) {
             Event::dispatch('admin.password.update.after', $user);

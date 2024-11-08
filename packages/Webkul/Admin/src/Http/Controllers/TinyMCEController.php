@@ -16,13 +16,13 @@ class TinyMCEController extends Controller
     /**
      * Upload file from tinymce.
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function upload()
     {
         $media = $this->storeMedia();
 
-        if (! empty($media)) {
+        if (!empty($media)) {
             return response()->json([
                 'location' => $media['file_url'],
             ]);
@@ -42,10 +42,14 @@ class TinyMCEController extends Controller
             return [];
         }
 
+        // Store the file in S3 using the 's3' disk
+        $path = request()->file('file')->store($this->storagePath, 's3');  // Specify 's3' disk here
+
         return [
-            'file'      => $path = request()->file('file')->store($this->storagePath),
+            'file'      => $path,
             'file_name' => request()->file('file')->getClientOriginalName(),
-            'file_url'  => Storage::url($path),
+            // Use Storage::disk('s3')->url() to get the URL from S3
+            'file_url'  => Storage::disk('s3')->url($path),
         ];
     }
 }

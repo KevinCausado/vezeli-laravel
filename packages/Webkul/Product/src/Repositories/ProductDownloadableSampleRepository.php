@@ -22,17 +22,28 @@ class ProductDownloadableSampleRepository extends Repository
      * @return mixed
      */
     public function upload($data, $productId)
-    {
-        if (! request()->hasFile('file')) {
-            return [];
-        }
-
-        return [
-            'file'      => $path = request()->file('file')->store('product_downloadable_links/'.$productId),
-            'file_name' => request()->file('file')->getClientOriginalName(),
-            'file_url'  => Storage::url($path),
-        ];
+{
+    // Verificar si el archivo fue subido
+    if (! request()->hasFile('file')) {
+        return [];
     }
+
+    // Subir el archivo al disco S3 en la carpeta 'product_downloadable_links/{productId}'
+    $path = request()->file('file')->store('product_downloadable_links/'.$productId, 's3');
+
+    // Obtener el nombre original del archivo
+    $fileName = request()->file('file')->getClientOriginalName();
+
+    // Generar la URL del archivo en S3
+    $fileUrl = Storage::disk('s3')->url($path);
+
+    return [
+        'file'      => $path,
+        'file_name' => $fileName,
+        'file_url'  => $fileUrl,
+    ];
+}
+
 
     /**
      * @param  Webkul\Product\Contracts\Product  $product

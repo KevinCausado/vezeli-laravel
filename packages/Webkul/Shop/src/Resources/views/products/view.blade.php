@@ -121,15 +121,16 @@
                                                 <span class="icon-download text-2xl"></span>
                                             </a>
                                         @elseif ($customAttributeValue['type'] == 'image')
-                                            <a 
-                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}" 
-                                                download="{{ $customAttributeValue['label'] }}"
-                                            >
-                                                <img 
-                                                    class="h-5 min-h-5 w-5 min-w-5" 
-                                                    src="{{ Storage::url($customAttributeValue['value']) }}" 
-                                                />
-                                            </a>
+                                        <a 
+                                        href="{{ Storage::disk('s3')->url($product[$customAttributeValue['code']]) }}" 
+                                        download="{{ $customAttributeValue['label'] }}"
+                                    >
+                                        <img 
+                                            class="h-5 min-h-5 w-5 min-w-5" 
+                                            src="{{ Storage::disk('s3')->url($customAttributeValue['value']) }}" 
+                                        />
+                                    </a>
+                                    
                                         @else
                                             <div class="grid">
                                                 <p class="text-base text-zinc-500">

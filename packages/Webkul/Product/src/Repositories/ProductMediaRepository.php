@@ -59,24 +59,34 @@ class ProductMediaRepository extends Repository
 
                         $image = $manager->make($file)->encode('webp');
 
+                        // Store the image on S3 disk with a random name
                         $path = $this->getProductDirectory($product).'/'.Str::random(40).'.webp';
 
-                        Storage::put($path, $image);
+                        // Store in S3
+                        Storage::disk('s3')->put($path, $image);
+
+                        // Get the URL for the image stored on S3
+                        $fileUrl = Storage::disk('s3')->url($path);
                     } else {
-                        $path = $file->store($this->getProductDirectory($product));
+                        // Store non-image files on S3
+                        $path = $file->store($this->getProductDirectory($product), 's3');
+                        $fileUrl = Storage::disk('s3')->url($path);
                     }
 
+                    // Store media info in database
                     $this->create([
                         'type'       => $uploadFileType,
                         'path'       => $path,
                         'product_id' => $product->id,
                         'position'   => ++$position,
+                        'file_url'   => $fileUrl, // Save URL to the database if needed
                     ]);
                 } else {
                     if (is_numeric($index = $previousIds->search($indexOrModelId))) {
                         $previousIds->forget($index);
                     }
 
+                    // Update position if the file already exists
                     $this->update([
                         'position' => ++$position,
                     ], $indexOrModelId);
@@ -84,13 +94,16 @@ class ProductMediaRepository extends Repository
             }
         }
 
+        // Clean up and delete old media files
         foreach ($previousIds as $indexOrModelId) {
             if (! $model = $this->find($indexOrModelId)) {
                 continue;
             }
 
-            Storage::delete($model->path);
+            // Delete file from S3
+            Storage::disk('s3')->delete($model->path);
 
+            // Delete the record from the database
             $this->delete($indexOrModelId);
         }
     }
