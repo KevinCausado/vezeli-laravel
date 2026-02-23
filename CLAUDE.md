@@ -88,13 +88,13 @@ vezeli-laravel/
 ### Alta prioridad
 - [ ] Configurar credenciales de pago (PayPal en `.env`)
 - [ ] Personalizar tema de la tienda (`resources/themes/`)
-- [ ] Configurar correo real (SMTP) para notificaciones a clientes
+- [x] ~~Configurar correo real (SMTP) para notificaciones a clientes~~ ✓ Hecho (Gmail SMTP)
 - [ ] Ajustar precios y moneda a COP
 
 ### Media prioridad
 - [ ] Configurar MagicAI (OpenAI) para descripciones de productos automáticas
 - [ ] Activar caché de página completa (FPC) para mejor rendimiento
-- [ ] Configurar social login (Google, Facebook) con credenciales OAuth
+- [x] ~~Configurar social login (Google) con credenciales OAuth~~ ✓ Hecho
 - [ ] Configurar Elasticsearch para búsqueda avanzada
 
 ### Baja prioridad / Futuro
@@ -103,6 +103,16 @@ vezeli-laravel/
 - [ ] Definir estrategia de despliegue (Docker, Nixpacks, u otro)
 - [ ] Crear módulo Webkul personalizado para funciones específicas de Vezeli
 - [ ] Configurar sitemap y SEO
+
+## Historial de cambios
+
+| Fecha | Cambio |
+|---|---|
+| 2026-02-23 | Correo SMTP configurado con Gmail (kevincausado@gmail.com) |
+| 2026-02-23 | Social Login con Google configurado y activado en Admin |
+| 2026-02-23 | CLAUDE.md creado con contexto del proyecto |
+| 2026-02-23 | Remoto `gitea` eliminado, solo se usa GitHub (`origin`) |
+| 2026-02-23 | BD renombrada de `laravel-vezeli` a `laravel_vezeli` (fix error #1932) |
 
 ## Variables de entorno importantes (`.env`)
 
