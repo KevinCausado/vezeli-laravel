@@ -89,7 +89,7 @@ vezeli-laravel/
 - [ ] Configurar credenciales de pago (PayPal en `.env`)
 - [ ] Personalizar tema de la tienda (`resources/themes/`)
 - [x] ~~Configurar correo real (SMTP) para notificaciones a clientes~~ ✓ Hecho (Gmail SMTP)
-- [ ] Ajustar precios y moneda a COP
+- [x] ~~Ajustar precios y moneda a COP~~ ✓ Hecho ($30.000, símbolo izquierda, sin decimales)
 
 ### Media prioridad
 - [ ] Configurar MagicAI (OpenAI) para descripciones de productos automáticas
@@ -108,6 +108,7 @@ vezeli-laravel/
 
 | Fecha | Cambio |
 |---|---|
+| 2026-02-23 | Formato COP ajustado: punto miles, sin decimales ($60.000) |
 | 2026-02-23 | Correo SMTP configurado con Gmail (kevincausado@gmail.com) |
 | 2026-02-23 | Social Login con Google configurado y activado en Admin |
 | 2026-02-23 | CLAUDE.md creado con contexto del proyecto |
