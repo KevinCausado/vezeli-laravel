@@ -9,22 +9,16 @@
     <div class="flex items-center gap-x-10 max-[1180px]:gap-x-5">
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.before') !!}
 
-        {{-- <a
+        <a
             href="{{ route('shop.home.index') }}"
             aria-label="@lang('shop::app.components.layouts.header.bagisto')"
         >
             <img
                 src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
-                width="131"
-                height="29"
                 alt="{{ config('app.name') }}"
+                style="height: 52px; width: auto;"
             >
-        </a> --}}
-        <a
-        href="{{ route('shop.home.index') }}"
-        aria-label="@lang('shop::app.components.layouts.header.bagisto')">
-        <span class="h-10 text-xl font-bold">Vezeli</span> 
-      </a> 
+        </a>
  
         
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.after') !!}

@@ -90,7 +90,8 @@ vezeli-laravel/
 - [ ] **PayPal**: Agregar `PAYPAL_CLIENT_ID` + `PAYPAL_CLIENT_SECRET` en `.env` y activar en Admin (módulo ya instalado)
 - [x] ~~**Sitemap XML**: Configurar generación con Spatie/sitemap~~ ✓ Hecho (`/storage/sitemaps/sitemap.xml`)
 - [x] ~~**robots.txt**: Agregar enlace al sitemap y optimizar reglas de crawl~~ ✓ Hecho
-- [ ] **Tema**: Personalizar colores, logo, branding en `resources/themes/` (actualmente gitignored)
+- [x] ~~**Logo**: Crear logo SVG y configurar en tienda y admin~~ ✓ Hecho
+- [ ] **Tema**: Personalizar colores, branding en `resources/themes/` (actualmente gitignored)
 - [x] ~~Configurar correo real (SMTP) para notificaciones a clientes~~ ✓ Hecho (Gmail SMTP)
 - [x] ~~Ajustar precios y moneda a COP~~ ✓ Hecho ($30.000, símbolo izquierda, sin decimales)
 - [x] ~~Configurar social login (Google) con credenciales OAuth~~ ✓ Hecho
@@ -116,6 +117,11 @@ vezeli-laravel/
 | 2026-02-23 | Remoto `gitea` eliminado, solo se usa GitHub (`origin`) |
 | 2026-02-25 | FPC activado (`RESPONSE_CACHE_ENABLED=true`) |
 | 2026-02-25 | Sitemap XML generado (`/storage/sitemaps/sitemap.xml`) |
+| 2026-02-25 | Logo SVG creado y configurado en tienda y admin |
+| 2026-02-25 | Header shop: restaurado `<img>` (estaba comentado, reemplazado por texto) |
+| 2026-02-25 | Admin: logo centrado sobre el sidebar en el header |
+| 2026-02-25 | APP_URL cambiado a `http://127.0.0.1:8000` (acceso local Windows) |
+| 2026-02-25 | .env agregado al .gitignore (seguridad - no subir secretos) |
 | 2026-02-25 | robots.txt mejorado con reglas SEO y enlace al sitemap |
 | 2026-02-23 | BD renombrada de `laravel-vezeli` a `laravel_vezeli` (fix error #1932) |
 
@@ -123,7 +129,7 @@ vezeli-laravel/
 
 ```env
 APP_NAME="Vezeli E-commerce"
-APP_URL=http://localhost:8000
+APP_URL=http://127.0.0.1:8000
 APP_LOCALE=es
 APP_TIMEZONE=America/Bogota
 
@@ -131,7 +137,7 @@ DB_DATABASE=laravel_vezeli
 DB_USERNAME=root
 DB_PASSWORD=          # vacío en local
 
-MAIL_MAILER=log       # solo guarda en log, no envía emails reales
+MAIL_MAILER=smtp      # Gmail SMTP configurado
 ```
 
 ## Cosas a tener en cuenta

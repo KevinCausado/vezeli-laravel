@@ -25,7 +25,11 @@
                 <x-slot:header>
                     <div class="flex items-center justify-between">
                         <a href="{{ route('shop.home.index') }}">
-                          <span class="h-10 text-xl font-bold">Vezeli</span>
+                            <img
+                                src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
+                                width="100"
+                                alt="{{ config('app.name') }}"
+                            >
                         </a>
                     </div>
                 </x-slot>
@@ -80,7 +84,11 @@
                 class="max-h-[30px]"
                 aria-label="@lang('shop::app.components.layouts.header.bagisto')"
             >
-            <span class="h-10 text-xl font-bold">Vezeli</span>
+                <img
+                    src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
+                    width="100"
+                    alt="{{ config('app.name') }}"
+                >
             </a>
             
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.logo.after') !!}

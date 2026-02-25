@@ -11,29 +11,17 @@
         >
         </i>
 
-        <!-- Logo -->
-        {{-- <a href="{{ route('admin.dashboard.index') }}">
-            @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+        <!-- Logo centrado sobre el sidebar (270px de ancho) -->
+        @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+            <a href="{{ route('admin.dashboard.index') }}"
+               style="position:absolute; left:0; width:270px; display:flex; justify-content:center; align-items:center; pointer-events:auto; z-index:1;">
                 <img
-                    class="h-10"
+                    style="height: 44px; width: auto;"
                     src="{{ Storage::url($logo) }}"
                     alt="{{ config('app.name') }}"
                 />
-            @else
-                <img
-                    src="{{ request()->cookie('dark_mode') ? bagisto_asset('images/dark-logo.svg') : bagisto_asset('images/logo.svg') }}"
-                    id="logo-image"
-                    alt="{{ config('app.name') }}"
-                />
-            @endif
-        </a> --}}
-
-        
-        {{-- <a href="{{ route('admin.dashboard.index') }}">
-          <span  class="{{ request()->cookie('dark_mode') ? 'text-black' : 'text-white' }} h-10 text-xl font-bold">
-            Vezeli
-        </span>        
-      </a>     --}}
+            </a>
+        @endif
       
 
         <!-- Mega Search Bar Vue Component -->
