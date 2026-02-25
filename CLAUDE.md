@@ -86,23 +86,24 @@ vezeli-laravel/
 ## Mejoras pendientes / posibles
 
 ### Alta prioridad
-- [ ] Configurar credenciales de pago (PayPal en `.env`)
-- [ ] Personalizar tema de la tienda (`resources/themes/`)
+- [x] ~~**FPC**: Activar caché de página completa~~ ✓ Hecho (`RESPONSE_CACHE_ENABLED=true`)
+- [ ] **PayPal**: Agregar `PAYPAL_CLIENT_ID` + `PAYPAL_CLIENT_SECRET` en `.env` y activar en Admin (módulo ya instalado)
+- [x] ~~**Sitemap XML**: Configurar generación con Spatie/sitemap~~ ✓ Hecho (`/storage/sitemaps/sitemap.xml`)
+- [x] ~~**robots.txt**: Agregar enlace al sitemap y optimizar reglas de crawl~~ ✓ Hecho
+- [ ] **Tema**: Personalizar colores, logo, branding en `resources/themes/` (actualmente gitignored)
 - [x] ~~Configurar correo real (SMTP) para notificaciones a clientes~~ ✓ Hecho (Gmail SMTP)
 - [x] ~~Ajustar precios y moneda a COP~~ ✓ Hecho ($30.000, símbolo izquierda, sin decimales)
+- [x] ~~Configurar social login (Google) con credenciales OAuth~~ ✓ Hecho
 
 ### Media prioridad
-- [ ] Configurar MagicAI (OpenAI) para descripciones de productos automáticas
-- [ ] Activar caché de página completa (FPC) para mejor rendimiento
-- [x] ~~Configurar social login (Google) con credenciales OAuth~~ ✓ Hecho
-- [ ] Configurar Elasticsearch para búsqueda avanzada
+- [ ] **MagicAI**: Agregar `OPENAI_API_KEY` para descripciones de productos automáticas (requiere pagar OpenAI)
+- [ ] **Elasticsearch**: Configurar para búsqueda avanzada de productos (módulo instalado, desactivado)
+- [ ] **Redis**: Configurar para sesiones y caché (actualmente usa file cache)
 
 ### Baja prioridad / Futuro
 - [ ] Agregar tests con Pest
-- [ ] Configurar Redis para sesiones y caché
 - [ ] Definir estrategia de despliegue (Docker, Nixpacks, u otro)
 - [ ] Crear módulo Webkul personalizado para funciones específicas de Vezeli
-- [ ] Configurar sitemap y SEO
 
 ## Historial de cambios
 
@@ -113,6 +114,9 @@ vezeli-laravel/
 | 2026-02-23 | Social Login con Google configurado y activado en Admin |
 | 2026-02-23 | CLAUDE.md creado con contexto del proyecto |
 | 2026-02-23 | Remoto `gitea` eliminado, solo se usa GitHub (`origin`) |
+| 2026-02-25 | FPC activado (`RESPONSE_CACHE_ENABLED=true`) |
+| 2026-02-25 | Sitemap XML generado (`/storage/sitemaps/sitemap.xml`) |
+| 2026-02-25 | robots.txt mejorado con reglas SEO y enlace al sitemap |
 | 2026-02-23 | BD renombrada de `laravel-vezeli` a `laravel_vezeli` (fix error #1932) |
 
 ## Variables de entorno importantes (`.env`)

@@ -1,2 +1,11 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /customer/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /compare/
+Disallow: /wishlist/
+Disallow: /storage/
+Allow: /storage/sitemaps/
+
+Sitemap: http://localhost:8000/storage/sitemaps/sitemap.xml
