@@ -106,6 +106,35 @@ vezeli-laravel/
 - [ ] Definir estrategia de despliegue (Docker, Nixpacks, u otro)
 - [ ] Crear módulo Webkul personalizado para funciones específicas de Vezeli
 
+## Pasarelas de pago para Colombia
+
+> ⚠️ Requiere servidor público (no funciona en localhost — Wompi/PSE necesitan webhooks con URL pública)
+
+### Recomendada: **Wompi** (Bancolombia)
+- Acepta: PSE, Nequi, tarjetas débito/crédito, QR Bancolombia, Efecty/Baloto
+- Documentación en español, sandbox gratuito para pruebas
+- Comisión: ~2.9% + $900 COP por transacción
+- Registro: https://wompi.com (requiere documentos empresa/persona natural)
+- **No hay módulo Bagisto oficial** → hay que crear módulo Webkul personalizado
+- Flujo: redirige al checkout de Wompi → webhook notifica el resultado
+
+### Alternativas
+| Pasarela | PSE | Tarjetas | Nequi | Módulo Bagisto |
+|---|---|---|---|---|
+| **Wompi** ⭐ | ✅ | ✅ | ✅ | ❌ (custom) |
+| **PayU** | ✅ | ✅ | ✅ | ✅ existe |
+| **MercadoPago** | ✅ | ✅ | ❌ | ✅ existe |
+| **ePayco** | ✅ | ✅ | ❌ | ❌ (custom) |
+
+### Pasos para implementar (cuando haya servidor)
+1. Registrarse en Wompi con documentos
+2. Obtener llaves: `pub_key` y `prv_key` (sandbox y producción)
+3. Crear módulo `packages/Webkul/Wompi/` con:
+   - `PaymentMethod` que redirige al checkout de Wompi
+   - Ruta webhook `/wompi/webhook` para recibir notificaciones
+   - Verificación de firma con `integrity_key`
+4. Activar en Admin → Configuración → Métodos de pago
+
 ## Historial de cambios
 
 | Fecha | Cambio |
